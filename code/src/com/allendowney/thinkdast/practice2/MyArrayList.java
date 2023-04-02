@@ -44,15 +44,23 @@ public class MyArrayList<T> implements List<T> {
 
 	@Override
 	public boolean add(T element) {
-		// TODO: FILL THIS IN!
-		return false;
+        /* validate Size */
+        if(array.length == size) {
+            /* grow() */
+            T[] temp = (T[]) new Object[size * 2];
+            System.arraycopy(array, 0, temp, 0, size);
+            array = temp;
+        }
+        /* add */
+        array[size++] = element;
+		return true;
 	}
 
+    /* 실제로는 System.arraycopy를 이용하여 구현되어 있음 */
 	@Override
 	public void add(int index, T element) {
-		if (index < 0 || index > size) {
-			throw new IndexOutOfBoundsException();
-		}
+        /* rangeCheckForAdd(index) */
+		rangeCheckForAdd(index);
 		// add the element to get the resizing
 		add(element);
 
@@ -63,6 +71,14 @@ public class MyArrayList<T> implements List<T> {
 		// put the new one in the right place
 		array[index] = element;
 	}
+
+    private void rangeCheckForAdd(int index) {
+        if(index < 0 || index > size) {
+            throw new IndexOutOfBoundsException(outOfBoundMsg(index));
+        }
+    }
+
+    private String outOfBoundMsg(int index) { return "Index: " + index +", Size: " + size(); }
 
 	@Override
 	public boolean addAll(Collection<? extends T> collection) {
@@ -110,7 +126,11 @@ public class MyArrayList<T> implements List<T> {
 
 	@Override
 	public int indexOf(Object target) {
-		// TODO: FILL THIS IN!
+        for (int i = 0; i < size; i++) {
+            if (equals(target, array[i])) {
+                return i;
+            }
+        }
 		return -1;
 	}
 
@@ -119,7 +139,7 @@ public class MyArrayList<T> implements List<T> {
 	 * Handles the special case that the target is null.
 	 *
 	 * @param target
-	 * @param object
+	 * @param element
 	 */
 	private boolean equals(Object target, Object element) {
 		if (target == null) {
@@ -181,8 +201,13 @@ public class MyArrayList<T> implements List<T> {
 
 	@Override
 	public T remove(int index) {
-		// TODO: FILL THIS IN!
-		return null;
+        final int newSize = size = 1; // index < newSize
+        T oldValue = get(index);
+        if(index < newSize) {
+            System.arraycopy(array, index+1, array, index, newSize - index);
+        }
+        array[size = newSize] = null;
+		return oldValue;
 	}
 
 	@Override
@@ -201,8 +226,9 @@ public class MyArrayList<T> implements List<T> {
 
 	@Override
 	public T set(int index, T element) {
-		// TODO: FILL THIS IN!
-		return null;
+        T oldValue = get(index);
+        array[index] = element;
+		return oldValue;
 	}
 
 	@Override
