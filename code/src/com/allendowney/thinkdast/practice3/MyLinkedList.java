@@ -166,15 +166,12 @@ public class MyLinkedList<E> implements List<E> {
 
 	@Override
 	public int indexOf(Object target) {
-		if(target == null) {
-            return -1;
-        } else {
-            Node ptr = head;
-            int index = 0;
-            for(; ptr != null; ptr = ptr.next, index++) {
-                if(equals(target, ptr.data)) {
-                    return index;
-                }
+        // target이 null일 때도 검색은 되게 해야한다.
+        int index = 0;
+        Node ptr = head;
+        for(; ptr != null; ptr = ptr.next, index++) {
+            if(equals(target, ptr.data)) { // 서로 똑같이 null 이면 true가 반환되게 됨
+                return index;
             }
         }
 		return -1;
