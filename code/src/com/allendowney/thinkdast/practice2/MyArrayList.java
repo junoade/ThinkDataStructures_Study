@@ -201,7 +201,7 @@ public class MyArrayList<T> implements List<T> {
 
 	@Override
 	public T remove(int index) {
-        final int newSize = size = 1; // index < newSize
+        final int newSize = size - 1; // index < newSize
         T oldValue = get(index);
         if(index < newSize) {
             System.arraycopy(array, index+1, array, index, newSize - index);
