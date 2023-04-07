@@ -172,7 +172,7 @@ public class MyLinkedList<E> implements List<E> {
             Node ptr = head;
             int index = 0;
             for(; ptr != null; ptr = ptr.next, index++) {
-                if(ptr.data == target) {
+                if(equals(target, ptr.data)) {
                     return index;
                 }
             }
