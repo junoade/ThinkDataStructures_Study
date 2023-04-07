@@ -241,8 +241,27 @@ public class MyLinkedList<E> implements List<E> {
 
 	@Override
 	public E remove(int index) {
-		//TODO: FILL THIS IN!
-		return null;
+        if(index < 0 || index > size) {
+            throw new IndexOutOfBoundsException();
+        }
+
+        E element = get(index);
+        if(index == 0) {
+            head = head.next;
+        } else {
+            Node beforePtr = head;
+            Node ptr = head.next;
+            for(int i = 1; i <= size; i++) {
+                if(index == i) {
+                    beforePtr.next = ptr.next;
+                    break;
+                }
+                beforePtr = ptr;
+                ptr = ptr.next;
+            }
+        }
+        size--;
+        return element;
 	}
 
 	@Override
